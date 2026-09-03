@@ -11,6 +11,9 @@ char userinput[100];
 char dir[50];
 char usern[25];
 char cwd[1024];
+int count = 0;
+char *parse[50];
+
 
 int main(int argc, char *argv[]){
 
@@ -26,6 +29,8 @@ int main(int argc, char *argv[]){
 
 while(1){
 
+  count = 0;
+
   struct passwd *pw = getpwuid(getuid());
 
 if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
@@ -35,7 +40,19 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
   fgets(userinput, sizeof(userinput), stdin);
   userinput[strcspn(userinput, "\n")] = '\0';
 
-  // USER INPUT TO SHELL (EXECVP)
+  // parse user input
+
+  char *token = strtok(userinput, " ");
+
+  while(token != NULL && count < sizeof(parse) / sizeof(parse[0])){
+
+    parse[count] = token;
+    count++;
+
+    token = strtok(NULL, " \n");
+  }
+
+  // USER INPUT TO THE SHELL (EXECVP)
   
 
   // help
@@ -138,12 +155,8 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
 
   // cd
    
-    if(strcmp(userinput, "cd") == 0){
-      printf("INPUT DIR: ");
-      fgets(dir, sizeof(dir), stdin);
-      dir[strcspn(dir, "\n")] = '\0';
-      chdir(dir);
-
+    if(strcmp(parse[0], "cd") == 0){
+      chdir(parse[1]);
       perror("cd");
   }
 
