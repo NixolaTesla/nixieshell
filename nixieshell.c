@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
   char *pid_clear[] = {"clear", NULL};
   char *pid_pwd[] = {"pwd", NULL};
 
-  printf("\nNIXIE SHELL V1\n");
+  printf("\nNIXIE SHELL V 2.1.0.0.0\n");
   printf("NixolaTesla on GitHub\n\n");
   printf("type 'help' for more information on the usage of nixieshell.\n");
 
@@ -50,6 +50,7 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
     count++;
 
     token = strtok(NULL, " \n");
+    parse[count] = NULL;
   }
 
   // USER INPUT TO THE SHELL (EXECVP)
@@ -59,9 +60,7 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
   
   
   if(strcmp(userinput, "help") == 0){
-    printf("\ncommands: ls,cd,pwd,fastfetch,neofetch,exit,clear\n\n");
-    printf("to use cd, type cd and hit enter, you will then be prompted to input your desired directory.\n\n");
-    printf("(to return to the previous directory, just type in ..)\n\n");
+    printf("\nWelcome to Nixie Shell! a very lightweight shell written purely in C, you can also use it to larp better and show off the fact that you use a niche shell no one has ever heard of ;)\n\n");
   }
 
   // ls
@@ -77,69 +76,6 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
     else{
      waitpid(pid, NULL, 0);
    }
-  }
-
-  // fastfetch
-
-    if(strcmp(userinput, "fastfetch") == 0){
-    pid_t pid = fork();
-
-    if(pid == 0){
-    execvp(pid_ff[0], pid_ff);
-    perror("EXECVP FAILED");
-   }
-
-    else{
-      waitpid(pid, NULL, 0);
-    }
-  }
-
-    // neofetch
-
-    if(strcmp(userinput, "neofetch") == 0){
-    pid_t pid = fork();
-
-    if(pid == 0){
-    execvp(pid_nf[0], pid_nf);
-    perror("EXECVP FAILED");
-   }
-
-    else{
-     waitpid(pid, NULL, 0);
-   }
-  }
-
-  // clear
- 
-   if(strcmp(userinput, "clear") == 0){
-     pid_t pid = fork();
-
-     if(pid == 0){
-       execvp(pid_clear[0], pid_clear);
-       perror("EXECVP FAILED");
-     }
-
-     else{
-       waitpid(pid, NULL, 0);
-     }
-   }
-
-
-
-   // pwd
-
-   if(strcmp(userinput, "pwd") == 0){
-      pid_t pid = fork();
-
-      if(pid == 0){
-	printf("\n");
-        execvp(pid_pwd[0], pid_pwd);
-	perror("EXECVP FAILED");
-    }
-
-      else{
-        waitpid(pid, NULL, 0);
-    }
   }
 
   // mkdir
@@ -165,6 +101,23 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
   if(strcmp(userinput, "exit") == 0){
     break;
   }
+
+
+  // other commands ig idk
+  //
+  else{
+    pid_t pid = fork();
+
+    if(pid == 0){
+      execvp(parse[0], parse);
+    }
+
+    else{
+      waitpid(pid, NULL, 0);
+    }
+  }
+
+ // v end of while(1) loop v
 }
   
   
