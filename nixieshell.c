@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
   char *pid_clear[] = {"clear", NULL};
   char *pid_pwd[] = {"pwd", NULL};
 
-  printf("\nNIXIE SHELL V 2.1.0.0.0\n");
+  printf("\nNIXIE SHELL V 2.2\n");
   printf("NixolaTesla on GitHub\n\n");
   printf("type 'help' for more information on the usage of nixieshell.\n");
 
@@ -37,7 +37,11 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
     printf("%s:~%s$ ", pw->pw_name, cwd);
 }
 
-  fgets(userinput, sizeof(userinput), stdin);
+  if (fgets(userinput, sizeof(userinput), stdin) == NULL) {
+    printf("\n");
+    break;
+ }
+
   userinput[strcspn(userinput, "\n")] = '\0';
 
   // parse user input
@@ -55,53 +59,42 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
 
   // USER INPUT TO THE SHELL (EXECVP)
   
+  if(parse[0] == NULL){
+    printf("\nInvalid Input\n");
+    continue;
+  }
 
   // help
   
   
   if(strcmp(userinput, "help") == 0){
-    printf("\nWelcome to Nixie Shell! a very lightweight shell written purely in C, you can also use it to larp better and show off the fact that you use a niche shell no one has ever heard of ;)\n\n");
-  }
-
-  // ls
-
-  if(strcmp(userinput, "ls") == 0){
-    pid_t pid = fork();
-
-    if(pid == 0){
-    execvp(pid_ls[0], pid_ls);
-    perror("EXECVP FAILED");
-   }
-
-    else{
-     waitpid(pid, NULL, 0);
-   }
+    printf("\nWelcome to Nixie Shell! a lightweight unix shell written purely in C, you can also use it to larp better and show off the fact that you use a niche shell no one has ever heard of ;)\n\n");
   }
 
   // mkdir
   
 
-    if(strcmp(userinput, "mkdir") == 0){
-      printf("INPUT DIR NAME: ");
-      fgets(dir, sizeof(dir), stdin);
-      dir[strcspn(dir, "\n")] = '\0';
-      mkdir(dir, 0755); 
+    if(strcmp(parse[0], "mkdir") == 0){
+       if(parse[1] == NULL){
+          perror("mkdir");
+       }
+       else{
+      mkdir(parse[1], 0755);
+      }
     }
  
 
   // cd
    
-    if(strcmp(parse[0], "cd") == 0){
+   else if(strcmp(parse[0], "cd") == 0){
       chdir(parse[1]);
-      perror("cd");
   }
 
     // EXIT SHELL
 
-  if(strcmp(userinput, "exit") == 0){
+  else if(strcmp(parse[0], "exit") == 0){
     break;
   }
-
 
   // other commands ig idk
   //
