@@ -15,11 +15,12 @@ int count1 = 0;
 char *parse1[50];
 char *parse2[50];
 int postpipe = 0;
+float version = 3.2;
 
 
 int main(int argc, char *argv[]){
 
-  printf("\nNIXIE SHELL V 3.0\n");
+  printf("\nNIXIE SHELL\n");
   printf("\nNixieProtocol on CodeBerg\n");
   printf("NixolaTesla on GitHub\n\n");
   printf("type 'help' for more information on the usage of Nixie Shell.\n");
@@ -32,11 +33,11 @@ while(1){
 
   struct passwd *pw = getpwuid(getuid());
 
-if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
+  if(pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
     printf("%s:~%s$ ", pw->pw_name, cwd);
-}
+ }
 
-  if (fgets(userinput, sizeof(userinput), stdin) == NULL) {
+  if(fgets(userinput, sizeof(userinput), stdin) == NULL){
     printf("\n");
     break;
  }
@@ -82,6 +83,15 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
     printf("\nWelcome to Nixie Shell! a lightweight unix shell written purely in C, you can also use it to larp better and show off the fact that you use a niche shell no one has ever heard of ;)\n\n");
   }
 
+  // nixie
+ 
+    if(strcmp(parse1[0], "nixie") == 0){
+
+       if(strcmp(parse1[1], "--version") == 0){
+          printf("%0.1f\n", version);
+       }
+    }
+
   // mkdir
   
 
@@ -97,13 +107,13 @@ if (pw != NULL && getcwd(cwd, sizeof(cwd)) != NULL) {
 
   // cd
    
-   else if(strcmp(parse1[0], "cd") == 0){
+ if(strcmp(parse1[0], "cd") == 0){
       chdir(parse1[1]);
   }
 
     // EXIT SHELL
 
-  else if(strcmp(parse1[0], "exit") == 0){
+  if(strcmp(parse1[0], "exit") == 0){
     break;
   }
 
