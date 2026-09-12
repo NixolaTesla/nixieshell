@@ -21,7 +21,6 @@ float version = 3.2;
 int main(int argc, char *argv[]){
 
   printf("\nNIXIE SHELL\n");
-  printf("\nNixieProtocol on CodeBerg\n");
   printf("NixolaTesla on GitHub\n\n");
   printf("type 'help' for more information on the usage of Nixie Shell.\n");
 
